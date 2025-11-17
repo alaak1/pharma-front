@@ -6,7 +6,9 @@ import { App } from './app';
 import { Header } from './shared/components/header/header';
 import { Footer } from './shared/components/footer/footer';
 import { Login } from './auth/login/login';
-import { HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {AuthInterceptor} from './auth/auth.interceptor';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,10 +20,16 @@ import { HttpClientModule} from '@angular/common/http';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [
-    provideBrowserGlobalErrorListeners()
+    provideBrowserGlobalErrorListeners(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [App]
 })

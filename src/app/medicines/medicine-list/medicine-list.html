@@ -1,108 +1,104 @@
-<div class="p-6 space-y-4 bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
+<div class="p-6 space-y-6">
 
-  <div class="flex justify-between items-center mb-4">
-    <h2 class="text-2xl font-semibold mb-4 text-white">Medicines</h2>
+  <!-- PAGE TITLE + CREATE BUTTON -->
+  <div class="flex flex-col md:flex-row place-items-center items-center justify-between">
+    <h2 class="page-title">Medicines</h2>
+
     <button
       routerLink="/medicines/create"
-      class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-sm"
+      class="btn btn-primary"
     >
       + Add Medicine
     </button>
   </div>
 
+  <!-- SEARCH + RESET BAR -->
 
+    <form class="w-full" (submit)="searchMedicines($event)">
+      <label for="search" class="sr-only">Search</label>
+
+      <div class="relative">
+
+        <!-- Icon -->
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+          <svg class="w-5 h-5 text-brand" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-width="2"
+                  d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
+          </svg>
+        </div>
+
+        <!-- Input -->
+        <input
+          [(ngModel)]="searchTerm"
+          name="search"
+          id="search"
+          type="search"
+          placeholder="Search medicines..."
+          class="input ps-10 placeholder:text-white rounded-full bg-green-soft border-green-soft focus:ring-brand focus:border-brand"
+        />
+
+        <!-- Search Button -->
+        <button
+          type="button"
+          (click)="applyFilter()"
+          class="btn btn-primary absolute end-20 top-1/2 -translate-y-1/2 rounded-full px-2 py-1.5"
+        >
+          Search
+        </button>
+
+        <!-- Reset Button -->
+        <button
+          type="button"
+          (click)="resetSearch()"
+          class="btn btn-primary absolute end-3 top-1/2 -translate-y-1/2 rounded-full px-2 py-1.5"
+        >
+          Reset
+        </button>
+      </div>
+    </form>
+
+  <!-- ACCORDIONS GROUPED BY CLOSET -->
   <div class="space-y-4">
 
-    <div class="flex md:flex-row md:items-center rounded-2xl md:justify-between gap-4
-              bg-white border border-gray-200 px-4 lg:px-6 py-2.5 rounded-lg shadow-sm
-              dark:bg-gray-800">
-
-      <!-- SEARCH BAR -->
-      <form class="w-full" (submit)="searchMedicines($event)">
-        <label for="search" class="block mb-2.5 rounded-2xl text-sm font-medium text-heading sr-only">Search</label>
-        <div class="relative">
-          <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-            <svg class="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                    d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
-            </svg>
-          </div>
-
-          <input
-            [(ngModel)]="searchTerm"
-            name="search"
-            type="search"
-            id="search"
-            placeholder="Search medicines..."
-            class="block w-full p-3 ps-9 rounded-2xl bg-neutral-secondary-medium border border-default-medium
-                 text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs
-                 placeholder:text-body dark:bg-gray-700 dark:text-white"
-          />
-
-          <button
-            type="button"
-            (click)="applyFilter()"
-            class="absolute end-20 bottom-1.5 text-white bg-brand hover:bg-brand-strong
-         border border-transparent focus:ring-4 focus:ring-brand-medium
-         font-medium leading-5 rounded text-xs px-3 py-1.5 shadow-xs"
-          >
-            Search
-          </button>
-
-          <button
-            type="button"
-            (click)="resetSearch()"
-            class="absolute end-3.5 bottom-1.5 text-gray-700 bg-gray-200 hover:bg-gray-300
-         border border-default-medium focus:ring-4 focus:ring-gray-300
-         font-medium leading-5 rounded text-xs px-3 py-1.5 shadow-xs"
-          >
-            Reset
-          </button>
-        </div>
-      </form>
-
-    </div>
-    <!-- Loop closets -->
     <details
       *ngFor="let closet of groupedByCloset | keyvalue : keyValueSorter"
-      class="group space-y-2 border rounded-lg p-4 [&_summary::-webkit-details-marker]:hidden"
+      class="group border rounded-lg p-4"
     >
-      <!-- Closet header -->
+      <!-- Closet Header -->
       <summary
-        class="flex cursor-pointer items-center justify-between gap-4 rounded-md bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800 font-medium text-white hover:bg-gray-600 border"
+        class="accordion-header group-open:bg-green-soft group-open:text-white transition-colors duration-300"
       >
         <span class="capitalize">{{ closet.key.replace('_', ' ') }}</span>
 
-        <svg
-          class="size-5 shrink-0 transition-transform duration-300 group-open:-rotate-180"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M19 9l-7 7-7-7" />
+        <svg class="size-5 shrink-0 transition-transform duration-300 group-open:-rotate-180"
+             xmlns="http://www.w3.org/2000/svg" fill="none"
+             viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
       </summary>
 
-      <div class="space-y-2 pl-4">
+      <!-- Medicines Inside This Closet -->
+      <div class="space-y-2 mt-3 pl-4">
 
-        <!-- Medicines inside closet -->
         <div
           *ngFor="let med of closet.value"
-          class="flex flex-col justify-between items-center px-4 py-3 rounded-lg border bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800 font-medium text-white hover:bg-gray-600 border cursor-pointer"
           [routerLink]="['/medicines', med.id]"
+          class="accordion-item border  border-green-soft rounded-lg px-4 py-3 shadow-md cursor-pointer transition"
         >
           <div>
-            <p class="font-medium">{{ med.med_name }}</p>
-            <p class="text-sm text-gray-500">{{ med.scientific_name }}</p>
+            <p class="font-semibold text-gray-700">{{ med.med_name }}</p>
+            <p class="text-sm text-gray-700">{{ med.scientific_name }}</p>
           </div>
 
-          <p class="font-semibold text-blue-600">{{ med.price }} JOD</p>
+          <p class="font-semibold text-gray-700">
+            {{ med.price }} JOD
+          </p>
         </div>
 
       </div>
-
     </details>
 
   </div>
+
+</div>

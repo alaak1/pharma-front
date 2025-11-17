@@ -1,13 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Login } from './auth/login/login';
+import {AuthGuard} from './auth/auth-guard';
 
 const routes: Routes = [
+  // Login (public)
   { path: 'login', component: Login },
 
-  // Optional: redirect root to login for now
-  // { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'medicines', loadChildren: () => import('./medicines/medicines-module').then(m => m.MedicinesModule) }
+  // Default route
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'medicines',canActivate: [AuthGuard], loadChildren: () => import('./medicines/medicines-module').then(m => m.MedicinesModule) },
+  { path: '**', redirectTo: '/login' }
 ];
 
 @NgModule({
