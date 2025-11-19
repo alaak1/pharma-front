@@ -6,7 +6,7 @@ import {HttpClient} from '@angular/common/http';
   providedIn: 'root',
 })
 export class Medicine {
-  private apiUrl = 'http://127.0.0.1:8000/api/medicine';  // UPDATE THIS
+  private apiUrl = 'https://pharma-backend-two.vercel.app/api/medicine';  // UPDATE THIS
 
   constructor(private http: HttpClient) {}
 

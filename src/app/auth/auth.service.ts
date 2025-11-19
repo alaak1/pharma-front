@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
 
-  private apiUrl = 'http://127.0.0.1:8000/api/login';
+  private apiUrl = 'https://pharma-backend-two.vercel.app/api/login';
 
   constructor(private http: HttpClient) {}
 
