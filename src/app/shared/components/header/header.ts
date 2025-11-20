@@ -23,17 +23,7 @@ export class Header {
   }
 
   logout() {
-    this.authService.logout().subscribe({
-      next: () => {
-        this.isLoggedIn = false;
-        this.router.navigate(['/login']);
-      },
-      error: () => {
-        // Even if API fails, clear token
-        localStorage.removeItem('token');
-        this.isLoggedIn = false;
-        this.router.navigate(['/login']);
-      }
-    });
+    this.authService.logout();   // clears everything + navigates to login
+    this.isLoggedIn = false;     // update UI state
   }
 }
