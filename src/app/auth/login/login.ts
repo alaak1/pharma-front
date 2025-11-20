@@ -9,14 +9,14 @@ import {Router} from '@angular/router';
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
-export class Login {
-
+export class Login{
   loginForm!: FormGroup;
-  errorMessage: string = '';
+  errorMessage = '';
+  isSubmitting = false;
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    private auth: AuthService,
     private router: Router
   ) {}
 
@@ -28,16 +28,31 @@ export class Login {
   }
 
   submit() {
-    if (this.loginForm.invalid) return;
+    if (this.loginForm.invalid || this.isSubmitting) return;
 
+    this.isSubmitting = true;
     this.errorMessage = '';
 
-    this.authService.login(this.loginForm.value).subscribe({
-      next: () => {
+    const { email, password } = this.loginForm.value;
+
+    this.auth.login(email!, password!).subscribe({
+      next: (res) => {
+        // Save tokens + user
+        this.auth.saveSession(res.token, res.refreshToken, res.user);
+
+        // Redirect to main page
         this.router.navigate(['/medicines']);
       },
       error: (err) => {
-        this.errorMessage = err.error?.message || 'Invalid login credentials.';
+        this.errorMessage =
+          err.error?.error ||
+          err.error?.message ||
+          "Invalid email or password.";
+
+        this.isSubmitting = false;
+      },
+      complete: () => {
+        this.isSubmitting = false;
       }
     });
   }

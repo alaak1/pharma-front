@@ -2,40 +2,60 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import {Router} from '@angular/router';
+import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private apiUrl = 'https://pharma-backend-two.vercel.app/api/login';
+  private apiUrl = 'https://pharma-backend-two.vercel.app';
 
-  constructor(private http: HttpClient) {}
+  private helper = new JwtHelperService();
 
-  login(credentials: any): Observable<any> {
-    return this.http.post(this.apiUrl, credentials).pipe(
-      tap((res: any) => {
-        if (res.token) {
-          localStorage.setItem('token', res.token);
-        }
-      })
-    );
+  constructor(private http: HttpClient, private router: Router) {}
+
+  login(email: string, password: string) {
+    return this.http.post<any>(`${this.apiUrl}/auth/login`, { email, password });
   }
 
-  logout(): Observable<any> {
-    return this.http.post(this.apiUrl,{}).pipe(
-      tap(() => {
-        localStorage.removeItem('token');
-      })
-    );
+  refresh(refreshToken: string) {
+    return this.http.post<any>(`${this.apiUrl}/auth/refresh`, { refreshToken });
+  }
+
+  saveSession(token: string, refresh: string, user: any) {
+    localStorage.setItem("token", token);
+    localStorage.setItem("refreshToken", refresh);
+    localStorage.setItem("user", JSON.stringify(user));
+  }
+
+  logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("user");
+    this.router.navigate(['/login']);
   }
 
   getToken() {
-    return localStorage.getItem('token');
+    return localStorage.getItem("token");
+  }
+
+  getRefreshToken() {
+    return localStorage.getItem("refreshToken");
+  }
+
+  getUser() {
+    return JSON.parse(localStorage.getItem("user") || "null");
+  }
+
+  isTokenExpired(): boolean {
+    const token = this.getToken();
+    if (!token) return true;
+    return this.helper.isTokenExpired(token);
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    return !this.isTokenExpired();
   }
-
 }
