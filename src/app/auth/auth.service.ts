@@ -17,11 +17,11 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   login(email: string, password: string) {
-    return this.http.post<any>(`${this.apiUrl}/auth/login`, { email, password });
+    return this.http.post<any>(`${this.apiUrl}/api/login`, { email, password });
   }
 
   refresh(refreshToken: string) {
-    return this.http.post<any>(`${this.apiUrl}/auth/refresh`, { refreshToken });
+    return this.http.post<any>(`${this.apiUrl}/api/refresh`, { refreshToken });
   }
 
   saveSession(token: string, refresh: string, user: any) {
