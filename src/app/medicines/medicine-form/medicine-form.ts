@@ -13,6 +13,7 @@ export class MedicineForm {
   medicineForm!: FormGroup;
   isEdit = false;
   medicineId!: string;
+  isSubmitting = false;
 
   constructor(
     private fb: FormBuilder,
@@ -50,13 +51,16 @@ export class MedicineForm {
   submit() {
     if (this.medicineForm.invalid) return;
 
+    this.isSubmitting = true;
+
     const payload = this.medicineForm.value;
 
     if (this.isEdit) {
       this.medicineService.updateMedicine(this.medicineId, payload).subscribe({
         next: (res) => {
-          console.log('Updated successfully:', res);
-          this.router.navigate(['/medicines', this.medicineId]);
+          this.router.navigate(['/medicines']);
+          this.isSubmitting = false;
+            alert('Medicine updated successfully!');
         },
         error: (err) => {
           console.error('Update failed:', err);
@@ -65,8 +69,10 @@ export class MedicineForm {
     } else {
       this.medicineService.createMedicine(payload).subscribe({
         next: (res) => {
-          console.log('Created successfully:', res);
-          this.router.navigate(['/medicines', this.medicineId]);        },
+          this.router.navigate(['/medicines']);
+          this.isSubmitting = false;
+          alert('Medicine created successfully!');
+          },
         error: (err) => {
           console.error('Create failed:', err);
         }
