@@ -30,7 +30,7 @@ export class MedicineList {
 
   groupMedicines(medicines: any[]) {
     this.groupedByCloset = medicines.reduce((groups: any, med: any) => {
-      const closet = med.closet || 'Uncategorized';
+      const rawCloset = med.closet || 'Uncategorized';
 
       const closet = rawCloset.trim().toLowerCase();
 
