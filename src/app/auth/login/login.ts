@@ -25,6 +25,10 @@ export class Login{
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
+
+    if (this.auth.isLoggedIn()) {
+      this.router.navigate(['/medicines']);
+    }
   }
 
   submit() {
