@@ -25,4 +25,8 @@ export class Medicine {
   updateMedicine(id: string, payload: any) {
     return this.http.put(`${this.apiUrl}/api/medicine/${id}`, payload);
   }
+
+  deleteMedicine(id: string) {
+    return this.http.delete(`${this.apiUrl}/api/medicine/delete/${id}`);
+  }
 }

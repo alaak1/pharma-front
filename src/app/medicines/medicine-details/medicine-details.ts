@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Medicine} from '../medicine';
 
 @Component({
@@ -11,10 +11,12 @@ import {Medicine} from '../medicine';
 export class MedicineDetails {
 
   medicine: any = {};
+  showDeleteConfirm = false;
 
   constructor(
     private route: ActivatedRoute,
-    private medicineService: Medicine
+    private medicineService: Medicine,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -26,5 +28,24 @@ export class MedicineDetails {
         error: (err) => console.error('Error loading medicine:', err)
       });
     }
+  }
+
+  confirmDelete() {
+    this.showDeleteConfirm = true;
+  }
+
+  deleteMedicine() {
+    if (!this.medicine?.id) return;
+
+    this.medicineService.deleteMedicine(this.medicine.id).subscribe({
+      next: () => {
+        this.showDeleteConfirm = false;
+        this.router.navigate(['/medicines']);
+      },
+      error: (err) => {
+        console.error('Failed to delete:', err);
+        this.showDeleteConfirm = false;
+      }
+    });
   }
 }

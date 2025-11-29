@@ -30,12 +30,29 @@ export class MedicineList {
 
   groupMedicines(medicines: any[]) {
     this.groupedByCloset = medicines.reduce((groups: any, med: any) => {
-      const rawCloset = med.closet || 'Uncategorized';
 
-      const closet = rawCloset.trim().toLowerCase();
+      let closet = med.closet?.trim().toLowerCase() || '';
+      const category = med.category?.trim().toLowerCase() || '';
 
-      if (!groups[closet]) groups[closet] = [];
-      groups[closet].push(med);
+      // Check if closet contains any digit
+      const closetHasNumber = /\d/.test(closet);
+      const closetIsEmpty = closet === '' || closet === null;
+
+
+      // Decide classification name
+      let groupName = '';
+
+      if (closetHasNumber || closetIsEmpty) {
+        // Use category if available
+        groupName = category || closet || 'uncategorized';
+      } else {
+        // Use closet normally
+        groupName = closet || 'uncategorized';
+      }
+
+      // Assign to group
+      if (!groups[groupName]) groups[groupName] = [];
+      groups[groupName].push(med);
 
       return groups;
     }, {});
