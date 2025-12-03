@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {AuthService} from '../../../auth/auth.service';
-import {Router} from '@angular/router';
+import { AuthService } from '../../../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -9,21 +9,17 @@ import {Router} from '@angular/router';
   styleUrl: './header.css',
 })
 export class Header {
-  isLoggedIn = false;
-
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
 
-  ngOnInit() {
-    this.isLoggedIn = this.authService.isLoggedIn();
-
-    // Optional: listen for login/logout events if needed later
+  // Evaluate on each change detection so the header reflects the latest auth state
+  get isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
   }
 
   logout() {
     this.authService.logout();   // clears everything + navigates to login
-    this.isLoggedIn = false;     // update UI state
   }
 }
