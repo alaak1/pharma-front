@@ -6,8 +6,7 @@ import {HttpClient} from '@angular/common/http';
   providedIn: 'root',
 })
 export class Medicine {
-  private apiUrl = 'https://pharma-backend-two.vercel.app';  // UPDATE THIS
-
+  private apiUrl = 'https://pharma-backend-two.vercel.app'; 
   constructor(private http: HttpClient) {}
 
   getMedicines(): Observable<any[]> {

@@ -5,11 +5,15 @@
     <h2 class="page-title">Medicines</h2>
 
     <button
+      *ngIf="canEdit"
       routerLink="/medicines/create"
       class="btn btn-primary"
     >
       + Add Medicine
     </button>
+    <span *ngIf="!canEdit" class="text-sm text-gray-700 font-medium">
+      View-only access
+    </span>
   </div>
 
   <!-- SEARCH + RESET BAR -->

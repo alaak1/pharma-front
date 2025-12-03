@@ -49,6 +49,12 @@ export class AuthService {
     return JSON.parse(localStorage.getItem("user") || "null");
   }
 
+  hasRole(...roles: string[]): boolean {
+    const user = this.getUser();
+    if (!user?.role) return false;
+    return roles.includes(user.role);
+  }
+
   isTokenExpired(): boolean {
     const token = this.getToken();
     if (!token) return true;

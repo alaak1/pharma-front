@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import {Medicine} from '../medicine';
 import { KeyValue } from '@angular/common';
+import { Medicine } from '../medicine';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-medicine-list',
@@ -13,10 +14,18 @@ export class MedicineList {
 
   searchTerm: string = '';
   originalMedicines: any[] = [];
+  canEdit = false;
+  role = '';
 
-  constructor(private medicineService: Medicine) {}
+  constructor(
+    private medicineService: Medicine,
+    private auth: AuthService
+  ) {}
 
   ngOnInit() {
+    this.role = this.auth.getUser()?.role || '';
+    this.canEdit = this.auth.hasRole('admin', 'regular');
+
     this.medicineService.getMedicines().subscribe({
       next: (data) => {
         this.originalMedicines = data;

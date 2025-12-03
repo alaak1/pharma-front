@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Medicine} from '../medicine';
+import {AuthService} from '../../auth/auth.service';
 
 @Component({
   selector: 'app-medicine-details',
@@ -12,14 +13,18 @@ export class MedicineDetails {
 
   medicine: any = {};
   showDeleteConfirm = false;
+  canEdit = false;
 
   constructor(
     private route: ActivatedRoute,
     private medicineService: Medicine,
-    private router: Router
+    private router: Router,
+    private auth: AuthService
   ) {}
 
   ngOnInit() {
+    this.canEdit = this.auth.hasRole('admin', 'regular');
+
     const id = this.route.snapshot.paramMap.get('id');
 
     if (id) {
