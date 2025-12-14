@@ -1,21 +1,21 @@
-<header>
-  <nav class="bg-green-deep px-4 lg:px-6 py-3">
-    <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+<header class="sticky top-0 z-30">
+  <nav class="bg-white/20 backdrop-blur-md border-b border-white/10 shadow-lg shadow-black/10">
+    <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl px-4 lg:px-8 py-3">
 
       <!-- LOGO -->
       <a routerLink="/medicines" class="flex items-center gap-3">
         <img
           src="assets/images/pharma-logo.png"
-          class="h-12 w-12 rounded-full"
+          class="h-12 w-12 rounded-full border border-white/30 shadow-md shadow-black/10"
           alt="Pharma Logo"
         />
-        <span class="text-sand text-2xl font-semibold">pharma Time</span>
+        <span class="text-2xl font-semibold tracking-wide text-slate-900">pharma Time</span>
       </a>
 
       <!-- ACTION BUTTONS -->
       <div class="flex items-center gap-3 lg:order-2">
 
-        <!-- IF USER IS LOGGED IN → SHOW LOGOUT -->
+        <!-- IF USER IS LOGGED IN SHOW LOGOUT -->
         <button
           *ngIf="isLoggedIn"
           (click)="logout()"
@@ -24,7 +24,7 @@
           Logout
         </button>
 
-        <!-- IF USER IS NOT LOGGED IN → SHOW LOGIN + GET STARTED -->
+        <!-- IF USER IS NOT LOGGED IN SHOW LOGIN -->
         <ng-container *ngIf="!isLoggedIn">
           <a routerLink="/login" class="btn btn-primary">Log in</a>
         </ng-container>
